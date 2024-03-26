@@ -39,15 +39,13 @@
                 <span asp-validation-for="Grocery.PublishDate" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />&nbsp;&nbsp;&nbsp;
+                <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
