@@ -1,3 +1,6 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Groceries.Data;
 namespace Groceries
 {
     public class Program
@@ -5,6 +8,8 @@ namespace Groceries
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<GroceriesContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("GroceriesContext") ?? throw new InvalidOperationException("Connection string 'GroceriesContext' not found.")));
 
             // Add services to the container.
             builder.Services.AddRazorPages();
