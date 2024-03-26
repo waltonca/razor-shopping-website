@@ -5,9 +5,31 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Update Grocery</h1>
+<h1>My Groceries</h1>
 
-@{
-    string imagePath = "/uploads/" + Model.Grocery.ImageFileName;
+<p>
+    <a asp-page="Create" class="btn btn-secondary">Create New</a>
+</p>
+
+
+
+
+@foreach (var item in Model.Grocery)
+{
+    <div class="row row-photoadmin">
+
+        <div class="col-md-3">
+            <img src="/uploads/@item.ImageFileName" class="img-fluid" />
+        </div>
+
+        <div class="col-md-9">
+            <h3>@item.Name</h3>
+            <p>@item.Description</p>
+            <p>
+                <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;
+                <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+            </p>
+        </div>
+
+    </div>
 }
-

@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Groceries.Data;
 using Groceries.Models;
@@ -13,15 +13,18 @@ namespace Groceries.Pages.Admin
 {
     public class EditModel : PageModel
     {
-        private readonly Groceries.Data.GroceriesContext _context;
+        private readonly GroceriesContext _context;
 
-        public EditModel(Groceries.Data.GroceriesContext context)
+        public EditModel(GroceriesContext context)
         {
             _context = context;
         }
 
         [BindProperty]
         public Grocery Grocery { get; set; } = default!;
+
+        [BindProperty]
+        public IFormFile ImageFile { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,22 +33,35 @@ namespace Groceries.Pages.Admin
                 return NotFound();
             }
 
-            var grocery =  await _context.Grocery.FirstOrDefaultAsync(m => m.Id == id);
+            var grocery = await _context.Grocery.FirstOrDefaultAsync(m => m.Id == id);
             if (grocery == null)
             {
                 return NotFound();
             }
+
             Grocery = grocery;
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            if (ImageFile != null && ImageFile.Length > 0)
+            {
+                var uploadsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + ImageFile.FileName;
+                var filePath = Path.Combine(uploadsDirectory, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await ImageFile.CopyToAsync(fileStream);
+                }
+
+                Grocery.ImageFileName = uniqueFileName;
             }
 
             _context.Attach(Grocery).State = EntityState.Modified;

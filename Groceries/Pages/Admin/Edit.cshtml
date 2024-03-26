@@ -5,49 +5,51 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Update Grocery</h1>
 
-<h4>Grocery</h4>
-<hr />
+@{
+    string imagePath = "/uploads/" + Model.Grocery.ImageFileName;
+}
+
+
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <img src="@imagePath" class="img-fluid" />
+
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <input type="hidden" asp-for="Grocery.Id" />
-            <div class="form-group">
+            <input type="hidden" asp-for="Grocery.PublishDate" />
+            <input type="hidden" asp-for="Grocery.ImageFileName" />
+
+            <div class="mb-3">
+                Published: @Model.Grocery.PublishDate
+            </div>
+
+            <div class="mb-3">
                 <label asp-for="Grocery.Name" class="control-label"></label>
                 <input asp-for="Grocery.Name" class="form-control" />
                 <span asp-validation-for="Grocery.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="mb-3">
                 <label asp-for="Grocery.Description" class="control-label"></label>
                 <input asp-for="Grocery.Description" class="form-control" />
                 <span asp-validation-for="Grocery.Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Grocery.ImageFileName" class="control-label"></label>
-                <input asp-for="Grocery.ImageFileName" class="form-control" />
-                <span asp-validation-for="Grocery.ImageFileName" class="text-danger"></span>
+
+            <div class="mb-3">
+                <label for="imageFile" class="control-label">Upload New Image:</label>
+                <input type="file" id="imageFile" name="imageFile" accept="image/*" class="form-control-file" />
             </div>
-            <div class="form-group">
-                <label asp-for="Grocery.Price" class="control-label"></label>
-                <input asp-for="Grocery.Price" class="form-control" />
-                <span asp-validation-for="Grocery.Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Grocery.PublishDate" class="control-label"></label>
-                <input asp-for="Grocery.PublishDate" class="form-control" />
-                <span asp-validation-for="Grocery.PublishDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="mb-3">
+                <input type="submit" value="Save" class="btn btn-primary" />&nbsp;&nbsp;&nbsp;
+                <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
 </div>
 
 @section Scripts {
