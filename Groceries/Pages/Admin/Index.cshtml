@@ -13,15 +13,14 @@
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Grocery[0].Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Grocery[0].Description)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Grocery[0].ImageFileName)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Grocery[0].Price)
             </th>
@@ -35,14 +34,15 @@
 @foreach (var item in Model.Grocery) {
         <tr>
             <td>
+                <img src="/uploads/@item.ImageFileName" class="img-fluid" />
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageFileName)
-            </td>
+        
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
