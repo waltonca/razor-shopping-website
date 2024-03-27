@@ -9,9 +9,11 @@ using Groceries.Data;
 using Groceries.Models;
 using System.ComponentModel;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Groceries.Pages.Admin
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly GroceriesContext _context;
