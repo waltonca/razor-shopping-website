@@ -1,0 +1,29 @@
+﻿@page
+@model Groceries.Pages.Admin.LoginModel
+@{
+}
+
+<h1>Login</h1>
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="UserName" class="form-label"></label><br>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label><br>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <br />
+            <input type="submit" value="Login" class="btn btn-primary" />
+        </form>
+
+    </div>
+</div>

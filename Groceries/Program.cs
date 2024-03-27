@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Groceries.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 namespace Groceries
 {
     public class Program
@@ -13,6 +14,18 @@ namespace Groceries
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+
+
+            // Cookie-based authentication
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                    options.SlidingExpiration = true;
+                    options.LoginPath = "/Admin/Login";
+                    options.LogoutPath = "/Admin/Logout";
+                    options.AccessDeniedPath = "/Error/";
+                });
 
             var app = builder.Build();
 
@@ -29,6 +42,7 @@ namespace Groceries
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapRazorPages();

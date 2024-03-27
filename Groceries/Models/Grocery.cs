@@ -9,4 +9,13 @@
         public decimal Price { get; set; }
         public DateTime PublishDate { get; set; }
     }
+
+    // For this assignment, we will not create a User model.
+    // Instead, we will use a string to represent the user AND hard code the username and password.
+
+    public class User
+    {
+        public string UserName { get; } = "admin";
+        public string Password { get; } = "nscc123";
+    }
 }
