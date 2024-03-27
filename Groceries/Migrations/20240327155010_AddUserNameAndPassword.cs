@@ -5,7 +5,7 @@
 namespace Groceries.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUserClass : Migration
+    public partial class AddUserNameAndPassword : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

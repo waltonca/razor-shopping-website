@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Groceries.Migrations
 {
     [DbContext(typeof(GroceriesContext))]
-    [Migration("20240327145916_AddUserClass")]
-    partial class AddUserClass
+    [Migration("20240327155309_AddUserNameAndPasswordTest")]
+    partial class AddUserNameAndPasswordTest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,10 @@ namespace Groceries.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("PublishDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
