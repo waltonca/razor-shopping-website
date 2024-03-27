@@ -1,32 +1,28 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Groceries.Data;
 using Groceries.Models;
 using Microsoft.AspNetCore.Authorization;
-
 namespace Groceries.Pages.Admin
 {
-    [Authorize]
+    [Authorize(Roles = "Adminstrator")]
     public class EditModel : PageModel
     {
-        private readonly GroceriesContext _context;
+        private readonly Groceries.Data.GroceriesContext _context;
 
-        public EditModel(GroceriesContext context)
+        public EditModel(Groceries.Data.GroceriesContext context)
         {
             _context = context;
         }
 
         [BindProperty]
         public Grocery Grocery { get; set; } = default!;
-
-        [BindProperty]
-        public IFormFile ImageFile { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -40,30 +36,17 @@ namespace Groceries.Pages.Admin
             {
                 return NotFound();
             }
-
             Grocery = grocery;
             return Page();
         }
 
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
-            }
-
-            if (ImageFile != null && ImageFile.Length > 0)
-            {
-                var uploadsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-                var uniqueFileName = Guid.NewGuid().ToString() + "_" + ImageFile.FileName;
-                var filePath = Path.Combine(uploadsDirectory, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await ImageFile.CopyToAsync(fileStream);
-                }
-
-                Grocery.ImageFileName = uniqueFileName;
             }
 
             _context.Attach(Grocery).State = EntityState.Modified;
@@ -83,10 +66,8 @@ namespace Groceries.Pages.Admin
                     throw;
                 }
             }
-
             return RedirectToPage("./Index");
         }
-
         private bool GroceryExists(int id)
         {
             return _context.Grocery.Any(e => e.Id == id);
