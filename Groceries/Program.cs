@@ -24,7 +24,7 @@ namespace Groceries
                     options.SlidingExpiration = true;
                     options.LoginPath = "/Admin/Login";
                     options.LogoutPath = "/Admin/Logout";
-                    options.AccessDeniedPath = "/Error/";
+                    options.AccessDeniedPath = "/AccessDenied/";
                 });
 
             var app = builder.Build();

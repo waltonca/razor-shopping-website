@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Groceries.Pages.Admin
 {
-    [Authorize]
+    [Authorize(Roles = "Adminstrator")]
     public class IndexModel : PageModel
     {
         private readonly Groceries.Data.GroceriesContext _context;

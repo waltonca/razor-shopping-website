@@ -49,7 +49,7 @@ namespace Groceries.Pages.Admin
                 List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, UserName),
-                    new Claim(ClaimTypes.Role, "Admin")
+                    new Claim(ClaimTypes.Role, "Adminstrator")
                 };
 
                 //Create Identity
