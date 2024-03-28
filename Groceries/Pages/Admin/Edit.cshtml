@@ -40,6 +40,12 @@
             </div>
 
             <div class="mb-3">
+                <label asp-for="Grocery.Price" class="control-label"></label>
+                <input asp-for="Grocery.Price" class="form-control" />
+                <span asp-validation-for="Grocery.Price" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
                 <label asp-for="FileUpload" class="form-label"></label><br>
                 <input asp-for="FileUpload" class="form-control" />
                 @if (Model.FileUpload != null)

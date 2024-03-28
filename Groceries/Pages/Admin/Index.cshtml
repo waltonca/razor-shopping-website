@@ -25,6 +25,7 @@
         <div class="col-md-9">
             <h3>@item.Name</h3>
             <p>@item.Description</p>
+            <p>$@item.Price</p>
             <p>
                 <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;
                 <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
