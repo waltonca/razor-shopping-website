@@ -23,7 +23,7 @@ namespace Groceries.Pages.Admin
 
         [BindProperty]
         [DisplayName("Change Photo")]
-        public IFormFile FileUpload { get; set; }
+        public IFormFile? FileUpload { get; set; }
 
         public EditModel(Groceries.Data.GroceriesContext context, IHostEnvironment environment)
         {
@@ -62,22 +62,34 @@ namespace Groceries.Pages.Admin
             // Upload file to server
             //
 
-            // Make a unique filename
-            string filename = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-fff_") + FileUpload.FileName;
-
-            // Update Grocery object to include the Grocery filename
-            Grocery.ImageFileName = filename;
-
-            // Save the file
-            string projectRootPath = _environment.ContentRootPath;
-            string fileSavePath = Path.Combine(projectRootPath, "wwwroot", "uploads", filename);
-
-            // We use a "using" to ensure the filestream is disposed of when we're done with it
-            using (FileStream fileStream = new FileStream(fileSavePath, FileMode.Create))
+            // Check if a new image was uploaded
+            if (FileUpload != null && FileUpload.Length > 0)
             {
-                FileUpload.CopyTo(fileStream);
-            }
+                // Make a unique filename
+                string filename = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-fff_") + FileUpload.FileName;
 
+                // Update Grocery object to include the Grocery filename
+                Grocery.ImageFileName = filename;
+
+                // Save the file
+                string projectRootPath = _environment.ContentRootPath;
+                string fileSavePath = Path.Combine(projectRootPath, "wwwroot", "uploads", filename);
+
+                // We use a "using" to ensure the filestream is disposed of when we're done with it
+                using (FileStream fileStream = new FileStream(fileSavePath, FileMode.Create))
+                {
+                    FileUpload.CopyTo(fileStream);
+                }
+
+                // Update the .net context
+                Grocery.ImageFileName = filename;
+            }
+            else 
+            {
+                // Clear the image filename if no new image was uploaded
+                ModelState.Remove("FileUpload");
+            }
+            
             _context.Attach(Grocery).State = EntityState.Modified;
 
             try
