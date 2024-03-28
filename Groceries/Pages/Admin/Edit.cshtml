@@ -40,8 +40,9 @@
             </div>
 
             <div class="mb-3">
-                <label for="imageFile" class="control-label">Upload New Image:</label>
-                <input type="file" id="imageFile" name="imageFile" accept="image/*" class="form-control-file" />
+                <label asp-for="FileUpload" class="form-label"></label><br>
+                <input asp-for="FileUpload" class="form-control" />
+                <span asp-validation-for="FileUpload" class="text-danger"></span>
             </div>
 
             <div class="mb-3">

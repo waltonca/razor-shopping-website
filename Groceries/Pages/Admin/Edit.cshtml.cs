@@ -9,20 +9,29 @@ using Microsoft.EntityFrameworkCore;
 using Groceries.Data;
 using Groceries.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel;
 namespace Groceries.Pages.Admin
 {
     [Authorize(Roles = "Adminstrator")]
     public class EditModel : PageModel
     {
-        private readonly Groceries.Data.GroceriesContext _context;
-
-        public EditModel(Groceries.Data.GroceriesContext context)
-        {
-            _context = context;
-        }
-
+        private readonly GroceriesContext _context;
+        private readonly IHostEnvironment _environment;
+        
         [BindProperty]
         public Grocery Grocery { get; set; } = default!;
+
+        [BindProperty]
+        [DisplayName("Change Photo")]
+        public IFormFile FileUpload { get; set; }
+
+        public EditModel(Groceries.Data.GroceriesContext context, IHostEnvironment environment)
+        {
+            _context = context;
+            _environment = environment;
+        }
+
+        
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -47,6 +56,26 @@ namespace Groceries.Pages.Admin
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            //
+            // Upload file to server
+            //
+
+            // Make a unique filename
+            string filename = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-fff_") + FileUpload.FileName;
+
+            // Update Grocery object to include the Grocery filename
+            Grocery.ImageFileName = filename;
+
+            // Save the file
+            string projectRootPath = _environment.ContentRootPath;
+            string fileSavePath = Path.Combine(projectRootPath, "wwwroot", "uploads", filename);
+
+            // We use a "using" to ensure the filestream is disposed of when we're done with it
+            using (FileStream fileStream = new FileStream(fileSavePath, FileMode.Create))
+            {
+                FileUpload.CopyTo(fileStream);
             }
 
             _context.Attach(Grocery).State = EntityState.Modified;
