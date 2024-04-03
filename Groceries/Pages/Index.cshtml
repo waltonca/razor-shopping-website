@@ -34,14 +34,14 @@
     string imageSrc = "/uploads/" + Model.Groceries.ElementAt(i-1).ImageFileName;
 
     // Output the individual card
-    <div class="col-xl-1">
+    <div class="col-6 col-sm-6 col-xl-2">
         <a asp-page="Details" asp-route-id="@Model.Groceries.ElementAt(i-1).Id"><img src="@imageSrc" class="img-fluid" /></a>
         <p>$@Model.Groceries.ElementAt(i-1).Price</p>
         <a asp-page="Details" asp-route-id="@Model.Groceries.ElementAt(i-1).Id"><p>@Model.Groceries.ElementAt(i-1).Name</p></a>
     </div>
 
     // Close the individual row
-    if(i % 4 == 0)
+    if(i % 6 == 0)
     {
         @:</div><div class="row">
     }
