@@ -1,0 +1,20 @@
+﻿@page
+@model Groceries.Pages.DetailsModel
+
+@{
+    string imagePath = "/uploads/" + Model.Grocery.ImageFileName;
+}
+
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+        <img src="@imagePath" class="img-fluid" />
+    </div>
+</div>
+
+<br />
+<br />
+<h3>@Model.Grocery.Name</h3>
+<h2>$@Model.Grocery.Price</h2>
+<p>@Model.Grocery.Description</p>
+<p>@Model.Grocery.PublishDate.ToString("D")</p>
+<p><a asp-page="./Index" class="btn btn-secondary">Return</a></p>

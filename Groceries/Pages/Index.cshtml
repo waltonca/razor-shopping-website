@@ -12,15 +12,16 @@
 <!-- products list section S -->
 <h2>Product List</h2>
 <div class="row">
-@for (int i = 1; i <= Model.Groceries.Count(); i++){
+@for (int i = 1; i <= Model.Groceries.Count(); i++)
+{
+
     string imageSrc = "/uploads/" + Model.Groceries.ElementAt(i-1).ImageFileName;
 
     // Output the individual card
     <div class="col-xl-2">
-        <a asp-page="Detail" asp-route-id="@Model.Groceries.ElementAt(i-1).Id"></a>
-        <img src="@imageSrc" class="img-fluid">
+        <a asp-page="Details" asp-route-id="@Model.Groceries.ElementAt(i-1).Id"><img src="@imageSrc" class="img-fluid" /></a>
         <p>$@Model.Groceries.ElementAt(i-1).Price</p>
-        <p>@Model.Groceries.ElementAt(i-1).Name</p>
+        <a asp-page="Details" asp-route-id="@Model.Groceries.ElementAt(i-1).Id"><p>@Model.Groceries.ElementAt(i-1).Name</p></a>
     </div>
 
     // Close the individual row
