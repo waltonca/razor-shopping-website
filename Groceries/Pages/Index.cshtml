@@ -4,7 +4,37 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- feature section S -->
+<h2>Feature</h2>
+
+<!-- feature section E -->
+
+<!-- products list section S -->
+<h2>Product List</h2>
+<div class="row">
+@for (int i = 1; i <= Model.Groceries.Count(); i++){
+    string imageSrc = "/uploads/" + Model.Groceries.ElementAt(i-1).ImageFileName;
+
+    // Output the individual card
+    <div class="col-xl-2">
+        <a asp-page="Detail" asp-route-id="@Model.Groceries.ElementAt(i-1).Id"></a>
+        <img src="@imageSrc" class="img-fluid">
+        <p>$@Model.Groceries.ElementAt(i-1).Price</p>
+        <p>@Model.Groceries.ElementAt(i-1).Name</p>
+    </div>
+
+    // Close the individual row
+    if(i % 6 == 0)
+    {
+        @:</div><div class="row">
+    }
+
+
+    // Close the last row
+    if(i == Model.Groceries.Count())
+    {
+        @:</div class="row"> 
+    }
+
+}
+<!-- products list section E -->
