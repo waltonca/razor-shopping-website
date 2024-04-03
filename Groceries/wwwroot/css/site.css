@@ -47,7 +47,20 @@ a:hover {
 .banner img {
     height: 100%;
 }
+@media (max-width: 992px) {
+    .details {
+        columns: 2;
+    }
+}
 
+@media (max-width: 576px) {
+    .details {
+        columns: 1;
+    }
+}
+
+
+/* */
 .pin-container {
     width: 100%;
     margin: 20px auto;
