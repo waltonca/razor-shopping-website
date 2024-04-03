@@ -16,13 +16,19 @@
     string randomProductName = randomProduct.Name;
     string randomProductPrice = randomProduct.Price.ToString();
 }
-<div class="banner">
-    <a asp-page="Details" asp-route-id="@randomProduct.Id">
-    <img src="@randomimageSrc" class="img-fluid" />
-    <!-- call to action -->
-    <p class="btn btn-danger">Buy Now</p>
-    </a>
+<a asp-page="Details" asp-route-id="@randomProduct.Id">
+<div class="banner row bg-secondary bg-opacity-25">
+    
+    <div class="col-xl-6"><img src="@randomimageSrc" class="img-fluid" /></div>
+    <div class="col-xl-6">
+        <h3>@randomProductName</h3>
+        <p>$@randomProductPrice</p>
+        <!-- call to action -->
+        <p class="btn btn-danger">Buy Now</p>
+    </div>
+    
 </div>
+</a>
 <!-- feature section E -->
 
 <!-- products list section S -->
