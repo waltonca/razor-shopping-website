@@ -6,7 +6,23 @@
 
 <!-- feature section S -->
 <h2>Feature</h2>
-
+@{
+    // Get a random grocery item
+    Random random = new Random();
+    int randomIndex = random.Next(Model.Groceries.Count());
+    var randomProduct = Model.Groceries.ElementAt(randomIndex);
+    string randomimageSrc = "/uploads/" + randomProduct.ImageFileName;
+    string randomProductUrl = "/Details/" + randomProduct.Id;
+    string randomProductName = randomProduct.Name;
+    string randomProductPrice = randomProduct.Price.ToString();
+}
+<div class="banner">
+    <a asp-page="Details" asp-route-id="@randomProduct.Id">
+    <img src="@randomimageSrc" class="img-fluid" />
+    <!-- call to action -->
+    <p class="btn btn-danger">Buy Now</p>
+    </a>
+</div>
 <!-- feature section E -->
 
 <!-- products list section S -->
