@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
+using System.Linq;
 
 namespace Groceries.Pages
 {
@@ -13,9 +14,12 @@ namespace Groceries.Pages
         private readonly GroceriesContext _context;
 
         public IList<Grocery> Groceries { get; set; } = default!;
+        
         // Cookie to store product IDs, "9,3,2,8,9,9"
         public List<int> ProductIDs { get; set; } = new List<int>();
-        public int Sum { get; set; } = 0;
+        // It seems that I don't need create ProductIDs cookies in Index page, Add ID only happen in Details page.
+        // Index only need to read the cookie, and sum up, display the CartSum
+        public int CartSum { get; set; } = 0;
 
        
         public IndexModel(ILogger<IndexModel> logger, GroceriesContext context)
@@ -31,6 +35,8 @@ namespace Groceries.Pages
             //
             // Get the existing cookie value
             string? cookieValue = Request.Cookies["ProductIDs"];
+            // Mockup data
+            // string? cookieValue = "1,2,3,4,6,44,55";
 
             // Cookie does not exist
             if (cookieValue == null)
@@ -40,8 +46,10 @@ namespace Groceries.Pages
             }
             else// If the cookie exists, parse its value into ProductIDs list
             {
-                ProductIDs = cookieValue.Split(',').Select(int.Parse).ToList();
-                Sum = ProductIDs.Sum();
+                // Fix how to get the length of "9,3,2,8,9,9"
+                
+                CartSum = cookieValue.Split(",").Length;
+
             }
         }
 
