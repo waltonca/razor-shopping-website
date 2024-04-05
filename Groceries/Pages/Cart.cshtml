@@ -1,4 +1,39 @@
 ﻿@page
 @model Groceries.Pages.CartModel
 @{
+    ViewData["Title"] = "My Shopping Cart";
 }
+<h2>Shopping cart</h2>
+@if (Model.Groceries.Count == 0)
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table class="table shopping-cart-container">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Groceries)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>$@item.Price</td>
+                    <td>@item.Description</td>
+                    <td><img src="/uploads/@item.ImageFileName" class="img-fluid" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<form method="post">
+    <button type="submit" class="btn btn-secondary">Checkout</button>
+    <button type="submit" class="btn btn-secondary">Continue Shopping</button>
+</form>
+

@@ -2,6 +2,7 @@
 @model Groceries.Pages.DetailsModel
 
 @{
+    ViewData["Title"] = Model.Grocery.Name;
     string imagePath = "/uploads/" + Model.Grocery.ImageFileName;
 }
 <div class="row details">
