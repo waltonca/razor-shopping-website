@@ -17,8 +17,11 @@
         <h2>$@Model.Grocery.Price</h2>
         <p>@Model.Grocery.Description</p>
         <p>@Model.Grocery.PublishDate.ToString("D")</p>
-        <p><a asp-page="./Index" class="btn btn-secondary">Add to Cart</a></p>
-        <p><a asp-page="./Index" class="btn btn-secondary">Continue Shopping</a></p>
+        <form method="post">
+            <input type="hidden" name="id" value="@Model.Grocery.Id" />
+            <button type="submit" class="btn btn-secondary">Add to Cart</button>
+            <button type="submit" class="btn btn-secondary">Continue Shopping</button>
+        </form>
     </div>
 </div>
 
