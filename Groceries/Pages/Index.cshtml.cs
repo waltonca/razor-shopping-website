@@ -34,7 +34,9 @@ namespace Groceries.Pages
             Groceries = await _context.Grocery.ToListAsync();
             //
             // Get the existing cookie value
-            string? cookieValue = Request.Cookies["ProductIDs"];
+            string? cookieValue = Request.Cookies["ProductIDs"]; // Can only read the cookie value 1st character, not the whole string
+
+            
             // Mockup data
             // string? cookieValue = "1,2,3,4,6,44,55";
 
@@ -48,7 +50,7 @@ namespace Groceries.Pages
             {
                 // Fix how to get the length of "9,3,2,8,9,9"
                 
-                CartSum = cookieValue.Split(",").Length;
+                CartSum = cookieValue.Split("-").Length;
 
             }
         }
