@@ -44,7 +44,7 @@ namespace Groceries.Pages
             if (cookieValue == null)
             {
                 // Create cookie and set its initial value to 0
-                createCookie(0);
+                createCookie("");
             }
             else// If the cookie exists, parse its value into ProductIDs list
             {
@@ -58,9 +58,9 @@ namespace Groceries.Pages
 
 
         // A helper function to create a cookie and set its value to count
-        private void createCookie(int count)
+        private void createCookie(string value)
         {
-            Response.Cookies.Append("ProductIDs", count.ToString(), new CookieOptions()
+            Response.Cookies.Append("ProductIDs", value, new CookieOptions()
             {
                 Expires = DateTime.Now.AddDays(1)
             });

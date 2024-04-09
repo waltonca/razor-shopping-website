@@ -15,6 +15,7 @@ else
             <tr>
                 <th>Item</th>
                 <th>Price</th>
+                <th>Quantity</th>
                 <th>Description</th>
                 <th>Image</th>
             </tr>
@@ -22,9 +23,13 @@ else
         <tbody>
             @foreach (var item in Model.Groceries)
             {
+                int productId = item.Id;
+                int quantity = Model.ProductIDs.Count(id => id == productId); // Count the occurrences of the current productId in the ProductIDs list
+
                 <tr>
                     <td>@item.Name</td>
                     <td>$@item.Price</td>
+                    <th>@quantity</th>
                     <td>@item.Description</td>
                     <td><img src="/uploads/@item.ImageFileName" class="img-fluid" /></td>
                 </tr>
@@ -33,7 +38,11 @@ else
     </table>
 }
 <form method="post">
-    <button type="submit" class="btn btn-secondary">Checkout</button>
-    <button type="submit" class="btn btn-secondary">Continue Shopping</button>
+    <!-- if cookie is empty, not display checkout-->
+    @if(Model.CartSum > 0)
+    {
+        <a asp-page="./Checkout" class="btn btn-primary">Checkout</a>
+    }
+    <a asp-page="./Index" class="btn btn-danger">Continue Shopping</a>
 </form>
 

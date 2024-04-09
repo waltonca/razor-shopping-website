@@ -50,7 +50,7 @@ namespace Groceries.Pages
                 if (cookieValue == null)
                 {
                     // Create cookie and set its initial value to 0
-                    createCookie("0");
+                    createCookie("");
                 }
                 else// If the cookie exists, parse its value into ProductIDs list
                 {
@@ -77,9 +77,24 @@ namespace Groceries.Pages
 
                 if (cookieValue != null)
                 {
-                    // Add the new product ID to the existing cookie
-                    cookieValue += "-" + productId;
+                    // If initial value is empty string, set cookieValue to productId directly
+                    if (cookieValue == "")
+                    {
+                        cookieValue = productId;
+                    }
+                    else
+                    {
+                        // Add the new product ID to the existing cookie
+                        cookieValue += "-" + productId;
+                    }
+
+                    // Update the cookie with the new value
                     createCookie(cookieValue);
+                }
+                else
+                {
+                    // If cookie doesn't exist, create it with the productId
+                    createCookie(productId);
                 }
             }
 
