@@ -54,6 +54,13 @@ namespace Groceries.Pages
         }
         public async Task OnGetAsync()
         {
+            
+
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            // Reget the some infor
             //
             // Get the existing cookie value
             string? cookieValue = Request.Cookies["ProductIDs"]; // Can only read the cookie value 1st character, not the whole string
@@ -103,15 +110,9 @@ namespace Groceries.Pages
             }
             // Calculate the total price
             Total = Subtotal + Tax;
-
-        }
-
-        public async Task<IActionResult> OnPostAsync()
-        {
             // Validate the form
             if (!ModelState.IsValid)
             {
-                
                 return Page();
             }
 
@@ -175,10 +176,6 @@ namespace Groceries.Pages
             });
         }
 
-        // I need update order summary and CartSum
-        private void updateOrder()
-        {
-            
-        }
+        
     }
 }
