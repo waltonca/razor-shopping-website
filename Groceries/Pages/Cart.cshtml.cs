@@ -60,7 +60,7 @@ namespace Groceries.Pages
 
         
 
-            private void createCookie(string value)
+        private void createCookie(string value)
         {
             Response.Cookies.Append("ProductIDs", value, new CookieOptions()
             {
