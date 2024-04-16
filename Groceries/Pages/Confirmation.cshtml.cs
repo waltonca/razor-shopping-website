@@ -35,9 +35,6 @@ namespace Groceries.Pages
             string? cookieValue = Request.Cookies["ProductIDs"]; // Can only read the cookie value 1st character, not the whole string
 
 
-            // Mockup data
-            // string? cookieValue = "1,2,3,4,6,44,55";
-
             // Cookie does not exist
             if (cookieValue == null)
             {

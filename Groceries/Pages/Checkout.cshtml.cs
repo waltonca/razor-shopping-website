@@ -161,7 +161,9 @@ namespace Groceries.Pages
                         string responseString = await response.Content.ReadAsStringAsync();
                         
                         TempData["InvoiceNumber"] = responseString;
-                        
+                        // Clear the cookie
+                        Response.Cookies.Delete("ProductIDs");
+
                         return RedirectToPage("./Confirmation");
                     }
                     else
