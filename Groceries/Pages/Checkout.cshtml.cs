@@ -31,23 +31,26 @@ namespace Groceries.Pages
 
         public class PurchaseData
         {
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public string Address { get; set; }
-            public string City { get; set; }
-            public string Province { get; set; }
-            public string PostalCode { get; set; }
-            public string ccNumber { get; set; }
-            public string ccExpiryDate { get; set; }
-            public string cvv { get; set; }
-            public string products { get; set; }
+            public string FirstName { get; set; } = string.Empty;
+            public string LastName { get; set; } = string.Empty;
+            public string Address { get; set; } = string.Empty;
+            public string City { get; set; } = string.Empty;
+            public string Province { get; set; } = string.Empty;
+            public string PostalCode { get; set; } = string.Empty;
+            public string ccNumber { get; set; } = string.Empty;
+            public string ccExpiryDate { get; set; } = string.Empty;
+            public string cvv { get; set; } = string.Empty;
+            public string products { get; set; } = string.Empty;
         }
 
+        [BindProperty]
+        public PurchaseData purchaseData { get; set; } = default!;
 
         public CheckoutModel(ILogger<IndexModel> logger, GroceriesContext context)
         {
             _logger = logger;
             _context = context;
+            purchaseData = new PurchaseData();
         }
         public async Task OnGetAsync()
         {
@@ -76,6 +79,8 @@ namespace Groceries.Pages
                 // Add product IDs to the list
                 ProductIDs.AddRange(ids.Select(int.Parse));
 
+                // set purchaseData.products 
+                purchaseData.products = cookieValue.Replace("-", ",");
 
             }
             // Get the products from the database
@@ -103,35 +108,13 @@ namespace Groceries.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // Read the cookie value
-            string? cookieValue = Request.Cookies["ProductIDs"];
-            // Convert 1-2-3-4-5 to 1,2,3,4,5
-            cookieValue = cookieValue.Replace("-", ",");
-
             // Validate the form
-
             if (!ModelState.IsValid)
             {
-                //ModelState.AddModelError("paymentFirstName", "Please enter a valid first name.");
-                //ModelState.AddModelError("paymentCVC", "Please enter a 3-digits number.");
+                
                 return Page();
             }
 
-            // Convert form data to json, and pass it to the API
-            // Create PurchaseData object with customer input
-            var purchaseData = new PurchaseData
-            {
-                FirstName = Request.Form["paymentFirstName"],
-                LastName = Request.Form["paymentLastName"],
-                Address = Request.Form["paymentStreet"],
-                City = Request.Form["paymentCity"],
-                Province = Request.Form["paymentProvince"],
-                PostalCode = Request.Form["paymentZipCode"],
-                ccNumber = Request.Form["paymentCreditCardNumber"],
-                ccExpiryDate = Request.Form["paymentExpiry"],
-                cvv = Request.Form["paymentCVC"],
-                products = cookieValue
-            };
 
             // Serialize purchaseData to JSON
             string jsonData = JsonConvert.SerializeObject(purchaseData);
@@ -190,6 +173,12 @@ namespace Groceries.Pages
             {
                 Expires = DateTime.Now.AddDays(1)
             });
+        }
+
+        // I need update order summary and CartSum
+        private void updateOrder()
+        {
+            
         }
     }
 }

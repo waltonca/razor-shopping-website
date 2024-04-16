@@ -7,102 +7,93 @@
 <div class="row mt-5">
     <div class="col-lg-7 checkout-left">
         <h3>Payment Details</h3>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-4 ">
-                        <label class="form-control-label" for="paymentFirstName">First name</label>
-                        <input type="text" class="form-control paymentFirstName" id="paymentFirstName" value="" name="paymentFirstName" required="" maxlength="45" pattern="^[A-Za-z0-9À-ÅÇ-ÖØ-åç-öø-ÿ \-',_;]+$">
-                        <span class="text-danger">@Html.ValidationMessage("paymentFirstName")</span>
+                        <label asp-for="purchaseData.FirstName" class="form-control-label">First name</label>
+                        <input asp-for="purchaseData.FirstName" type="text" class="form-control paymentFirstName"  >
+                        
+                        <span asp-validation-for="purchaseData.FirstName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group mb-4">
-                        <label class="form-control-label" for="paymentLastName">Last name</label>
-                        <input type="text" class="form-control paymentLastName" id="paymentLastName" value="" name="paymentLastName" required="" maxlength="45" pattern="^[A-Za-z0-9À-ÅÇ-ÖØ-åç-öø-ÿ \-',_;]+$">
-
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group mb-4">
-                    <label class="form-control-label" for="paymentStreet">Street</label>
-                    <input type="text" class="form-control paymentStreet" id="paymentStreet" placeholder="Street address or P.O. Box" value="" name="paymentStreet" required=""  maxlength="45" pattern="^[^$?%\x{22}\x{3C}\x{3E}\x{00FF}-\x{FFFF}]+$" >
-                    
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group mb-4">
-                        <label class="form-control-label" for="paymentCountry">Country</label>
-                        <select class="form-select paymentCountry" id="paymentCountry" name="paymentCountry" required="">
-                            <option value="">Select</option>
-                            <option id="CA" value="CA" selected="">Canada</option>
-                            <option id="US" value="US">United States</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group mb-4">
-                        <label class="form-control-label" for="paymentProvince">Province</label>
-                        <select class="form-select paymentProvince" id="paymentProvince" name="paymentProvince" required="">
-                            <option value="">Select</option>
-                            <option id="AB" value="AB">Alberta</option>
-                            <option id="BC" value="BC">British Columbia</option>
-                            <option id="MB" value="MB">Manitoba</option>
-                            <option id="NB" value="NB">New Brunswick</option>
-                            <option id="NL" value="NL">Newfoundland and Labrador</option>
-                            <option id="NT" value="NT">Northwest Territories</option>
-                            <option id="NS" value="NS" selected="">Nova Scotia</option>
-                            <option id="NU" value="NU">Nunavut</option>
-                            <option id="ON" value="ON">Ontario</option>
-                            <option id="PE" value="PE">Prince Edward Island</option>
-                            <option id="QC" value="QC">Quebec</option>
-                            <option id="SK" value="SK">Saskatchewan</option>
-                            <option id="YT" value="YT">Yukon</option>
-                        </select>
-                        <div class="invalid-feedback" id="defaultState"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group mb-4">
-                        <label class="form-control-label" for="paymentCity">City</label>
-                        <input type="text" class="form-control paymentCity" id="paymentCity" value="" name="paymentCity" required="" maxlength="45" minlength="2" pattern="^[^$?%\x{22}\x{3C}\x{3E}\x{00FF}-\x{FFFF}]+$" >
-                        <div class="invalid-feedback" id="defaultCity"></div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group mb-4">
-                        <label class="form-control-label ca-states " for="paymentZipCode">Postal code</label>
-                        <input type="text" class="form-control paymentZipCode" id="paymentZipCode" value="" name="paymentZipCode" required="" maxlength="10" minlength="5" pattern="(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Za-z]{1} *\d{1}[A-Za-z]{1}\d{1}$)">
-                        <div class="invalid-feedback" id="defaultZipCode"></div>
+                        <label asp-for="purchaseData.LastName" class="form-control-label" >Last name</label>
+                        <input asp-for="purchaseData.LastName" type="text" class="form-control paymentLastName"  >
+                        <span asp-validation-for="purchaseData.LastName" class="text-danger"></span>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group mb-4">
-                    <label class="form-control-label" for="paymentCreditCardNumber">Credit Card Number</label>
-                    <input type="text" class="form-control paymentCreditCardNumber" id="paymentCreditCardNumber" placeholder="16-digits" value="" name="paymentCreditCardNumber" required="" maxlength="45" pattern="^\d{16}$">
-
+                    <label asp-for="purchaseData.Address" class="form-control-label">Street</label>
+                    <input asp-for="purchaseData.Address" type="text" class="form-control paymentStreet" placeholder="Street address or P.O. Box" >
+                    <span asp-validation-for="purchaseData.Address" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group mb-4">
+                    <label asp-for="purchaseData.Province" class="form-control-label" for="paymentProvince">Province</label>
+                    <select asp-for="purchaseData.Province" class="form-select paymentProvince" id="paymentProvince"  >
+                        <option value="">Select</option>
+                        <option id="AB" value="AB">Alberta</option>
+                        <option id="BC" value="BC">British Columbia</option>
+                        <option id="MB" value="MB">Manitoba</option>
+                        <option id="NB" value="NB">New Brunswick</option>
+                        <option id="NL" value="NL">Newfoundland and Labrador</option>
+                        <option id="NT" value="NT">Northwest Territories</option>
+                        <option id="NS" value="NS" selected="">Nova Scotia</option>
+                        <option id="NU" value="NU">Nunavut</option>
+                        <option id="ON" value="ON">Ontario</option>
+                        <option id="PE" value="PE">Prince Edward Island</option>
+                        <option id="QC" value="QC">Quebec</option>
+                        <option id="SK" value="SK">Saskatchewan</option>
+                        <option id="YT" value="YT">Yukon</option>
+                    </select>
+                    <span asp-validation-for="purchaseData.Province" class="text-danger"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-4">
-                        <label class="form-control-label" for="paymentExpiry">Expiry</label>
-                        <input type="text" class="form-control paymentExpiry" id="paymentExpiry" placeholder="4-digits" value="" name="paymentExpiry" required="" pattern="^\d{4}$">
-                        <div class="invalid-feedback" id="defaultCity"></div>
+                        <label asp-for="purchaseData.City" class="form-control-label" for="paymentCity">City</label>
+                        <input asp-for="purchaseData.City" type="text" class="form-control paymentCity" id="paymentCity"   >
+                        
+                        <span asp-validation-for="purchaseData.City" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group mb-4">
-                        <label class="form-control-label ca-states " for="paymentCVC">CVC</label>
-                        <input type="text" class="form-control paymentCVC" id="paymentCVC" placeholder="3-digits" value="" name="paymentCVC" required="" pattern="^\d{3}$">
-                        <div class="invalid-feedback" id="defaultZipCode"></div>
-                        <span class="text-danger">@Html.ValidationMessage("paymentCVC")</span>
+                        <label asp-for="purchaseData.PostalCode" class="form-control-label ca-states " for="paymentZipCode">Postal code</label>
+                        <input asp-for="purchaseData.PostalCode" type="text" class="form-control paymentZipCode" id="paymentZipCode"  >
+                        
+                        <span asp-validation-for="purchaseData.PostalCode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group mb-4">
+                    <label asp-for="purchaseData.ccNumber" class="form-control-label" for="paymentCreditCardNumber">Credit Card Number</label>
+                    <input asp-for="purchaseData.ccNumber" type="text" class="form-control paymentCreditCardNumber" id="paymentCreditCardNumber" placeholder="16-digits"   >
+                    <span asp-validation-for="purchaseData.ccNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-4">
+                        <label asp-for="purchaseData.ccExpiryDate" class="form-control-label" for="paymentExpiry">Expiry</label>
+                        <input asp-for="purchaseData.ccExpiryDate" type="text" class="form-control paymentExpiry" id="paymentExpiry" placeholder="4-digits"  >
+                        <span asp-validation-for="purchaseData.ccExpiryDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-4">
+                        <label asp-for="purchaseData.cvv" class="form-control-label ca-states " for="paymentCVC">CVC</label>
+                        <input asp-for="purchaseData.cvv" type="text" class="form-control paymentCVC" id="paymentCVC" placeholder="3-digits"   >
+                        <span asp-validation-for="purchaseData.cvv" class="text-danger"></span>
+                        <input type="hidden" asp-for="purchaseData.products" />
                     </div>
                 </div>
             </div>
