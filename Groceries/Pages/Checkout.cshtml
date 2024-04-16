@@ -13,7 +13,7 @@
                     <div class="form-group mb-4 ">
                         <label class="form-control-label" for="paymentFirstName">First name</label>
                         <input type="text" class="form-control paymentFirstName" id="paymentFirstName" value="" name="paymentFirstName" required="" maxlength="45" pattern="^[A-Za-z0-9À-ÅÇ-ÖØ-åç-öø-ÿ \-',_;]+$">
-                        
+                        <span class="text-danger">@Html.ValidationMessage("paymentFirstName")</span>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -101,8 +101,13 @@
                         <label class="form-control-label ca-states " for="paymentCVC">CVC</label>
                         <input type="text" class="form-control paymentCVC" id="paymentCVC" placeholder="3-digits" value="" name="paymentCVC" required="" pattern="^\d{3}$">
                         <div class="invalid-feedback" id="defaultZipCode"></div>
+                        <span class="text-danger">@Html.ValidationMessage("paymentCVC")</span>
                     </div>
                 </div>
+            </div>
+            <div>
+                <input type="submit" value="Submit Order" class="btn btn-primary" />&nbsp;&nbsp;&nbsp;
+                <a asp-page="./Index" class="btn btn-secondary">Continue Shopping</a>
             </div>
         </form>
     </div>
@@ -146,5 +151,5 @@
             </div>
         </div>
     </div>
-<div><a asp-page="./Confirmation" class="btn btn-primary me-2">Submit Order</a><a asp-page="./Index" class="btn btn-secondary">Continue Shopping</a></div>
+    
 </div>

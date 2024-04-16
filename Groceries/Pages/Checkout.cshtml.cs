@@ -85,6 +85,21 @@ namespace Groceries.Pages
 
         }
 
+        public IActionResult OnPost()
+        {
+            // Validate the form
+            // Convert form data to json, and pass it to the API
+            if (!ModelState.IsValid)
+            {
+                //ModelState.AddModelError("paymentFirstName", "Please enter a valid first name.");
+                //ModelState.AddModelError("paymentCVC", "Please enter a 3-digits number.");
+                return Page();
+            }
+
+
+            return RedirectToPage("./Confirmation");
+        }
+
         private void createCookie(string value)
         {
             Response.Cookies.Append("ProductIDs", value, new CookieOptions()
