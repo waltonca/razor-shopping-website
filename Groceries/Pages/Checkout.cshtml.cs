@@ -3,6 +3,8 @@ using Groceries.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Groceries.Pages
 {
@@ -85,10 +87,10 @@ namespace Groceries.Pages
 
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             // Validate the form
-            // Convert form data to json, and pass it to the API
+            
             if (!ModelState.IsValid)
             {
                 //ModelState.AddModelError("paymentFirstName", "Please enter a valid first name.");
@@ -96,8 +98,44 @@ namespace Groceries.Pages
                 return Page();
             }
 
+            // Convert form data to json, and pass it to the API
+            // Create PurchaseData object with customer input
+            var purchaseData = new
+            {
+                FirstName = Request.Form["paymentFirstName"],
+                LastName = Request.Form["paymentLastName"],
+                Address = Request.Form["paymentStreet"],
+                City = Request.Form["paymentCity"],
+                Province = Request.Form["paymentProvince"],
+                PostalCode = Request.Form["paymentZipCode"],
+                ccNumber = Request.Form["paymentCreditCardNumber"],
+                ccExpiryDate = Request.Form["paymentExpiry"],
+                cvv = Request.Form["paymentCVC"],
+                products = string.Join(",", ProductIDs)
+            };
 
-            return RedirectToPage("./Confirmation");
+            // Serialize purchaseData to JSON
+            string jsonPayload = JsonConvert.SerializeObject(purchaseData);
+
+            // Post JSON to Purchase API
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://purchasesapi20240407212852.azurewebsites.net");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await client.PostAsync("/api/purchase", new StringContent(jsonPayload, Encoding.UTF8, "application/json"));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToPage("./Confirmation");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "An error occurred while processing your request. Please try again later.");
+                    return Page();
+                }
+            }
         }
 
         private void createCookie(string value)
