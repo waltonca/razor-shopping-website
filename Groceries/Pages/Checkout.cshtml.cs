@@ -29,6 +29,20 @@ namespace Groceries.Pages
         // Total $31.30
         public decimal Total { get; set; } = 0;
 
+        public class PurchaseData
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Address { get; set; }
+            public string City { get; set; }
+            public string Province { get; set; }
+            public string PostalCode { get; set; }
+            public string ccNumber { get; set; }
+            public string ccExpiryDate { get; set; }
+            public string cvv { get; set; }
+            public string products { get; set; }
+        }
+
 
         public CheckoutModel(ILogger<IndexModel> logger, GroceriesContext context)
         {
@@ -89,8 +103,13 @@ namespace Groceries.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // Read the cookie value
+            string? cookieValue = Request.Cookies["ProductIDs"];
+            // Convert 1-2-3-4-5 to 1,2,3,4,5
+            cookieValue = cookieValue.Replace("-", ",");
+
             // Validate the form
-            
+
             if (!ModelState.IsValid)
             {
                 //ModelState.AddModelError("paymentFirstName", "Please enter a valid first name.");
@@ -100,7 +119,7 @@ namespace Groceries.Pages
 
             // Convert form data to json, and pass it to the API
             // Create PurchaseData object with customer input
-            var purchaseData = new
+            var purchaseData = new PurchaseData
             {
                 FirstName = Request.Form["paymentFirstName"],
                 LastName = Request.Form["paymentLastName"],
@@ -111,31 +130,56 @@ namespace Groceries.Pages
                 ccNumber = Request.Form["paymentCreditCardNumber"],
                 ccExpiryDate = Request.Form["paymentExpiry"],
                 cvv = Request.Form["paymentCVC"],
-                products = string.Join(",", ProductIDs)
+                products = cookieValue
             };
 
             // Serialize purchaseData to JSON
-            string jsonPayload = JsonConvert.SerializeObject(purchaseData);
+            string jsonData = JsonConvert.SerializeObject(purchaseData);
 
-            // Post JSON to Purchase API
+            // Hard code sample JSON payload
+            string jsonPayload = "{\"FirstName\":\"John\",\"LastName\":\"Doe\",\"Address\":\"123 Main St\",\"City\":\"New York\",\"Province\":\"NY\",\"PostalCode\":\"B3L1X6\",\"ccNumber\":\"1111111111111111\",\"ccExpiryDate\":\"1225\",\"cvv\":\"123\",\"products\":\"1,2,3,4,5\"}";
+
+           
             using (var client = new HttpClient())
             {
+                
                 client.BaseAddress = new Uri("https://purchasesapi20240407212852.azurewebsites.net");
+                
                 client.DefaultRequestHeaders.Accept.Clear();
+                
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = await client.PostAsync("/api/purchase", new StringContent(jsonPayload, Encoding.UTF8, "application/json"));
+                try
+                {
+                    
+                    HttpResponseMessage response = await client.PostAsync("/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return RedirectToPage("./Confirmation");
+                    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        
+                        TempData["InvoiceNumber"] = responseString;
+                        
+                        return RedirectToPage("./Confirmation");
+                    }
+                    else
+                    {
+                        
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        
+                        ModelState.AddModelError("", "An error occurred while processing your request. Please try again later." + responseString);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "An error occurred while processing your request. Please try again later.");
-                    return Page();
+                    ModelState.AddModelError("", "An error occurred while processing your request. Please try again later. Exception: " + ex.Message);
                 }
             }
+
+            return Page();
+
         }
 
         private void createCookie(string value)
