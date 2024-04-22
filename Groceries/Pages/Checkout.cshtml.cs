@@ -54,8 +54,55 @@ namespace Groceries.Pages
         }
         public async Task OnGetAsync()
         {
-            
 
+            // Get the existing cookie value
+            string? cookieValue = Request.Cookies["ProductIDs"]; // Can only read the cookie value 1st character, not the whole string
+
+
+            // Mockup data
+            // string? cookieValue = "1,2,3,4,6,44,55";
+
+            // Cookie does not exist
+            if (cookieValue == null)
+            {
+                // Create cookie and set its initial value to 0
+                createCookie("");
+            }
+            else// If the cookie exists, parse its value into ProductIDs list
+            {
+                // Fix how to get the length of "9,3,2,8,9,9"
+                CartSum = cookieValue.Split("-").Length;
+
+                // Parse the value of the cookie and render the page to display a list of the products with details including image. 
+                string[] ids = cookieValue.Split("-");
+
+                // Add product IDs to the list
+                ProductIDs.AddRange(ids.Select(int.Parse));
+
+                // set purchaseData.products 
+                purchaseData.products = cookieValue.Replace("-", ",");
+
+            }
+            // Get the products from the database
+            Groceries = await _context.Grocery.Where(g => ProductIDs.Contains(g.Id)).ToListAsync();
+
+            // Calculate the total price of the products in the cart
+            Subtotal = Groceries.Sum(g => g.Price);
+            // Calculate the tax, which is 15% of the subtotal,
+            // LIKE $12.59
+            Tax = Math.Round(Subtotal * 0.15m, 2);
+            // Calculate the shipping cost, let's assume it's free
+            // If the subtotal is greater than $50, the shipping is free. Otherwise, the shipping cost is $5.
+            if (Subtotal > 50)
+            {
+                Shipping = 0;
+            }
+            else
+            {
+                Shipping = 5;
+            }
+            // Calculate the total price
+            Total = Subtotal + Tax;
         }
 
         public async Task<IActionResult> OnPostAsync()
